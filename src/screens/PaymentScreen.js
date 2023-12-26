@@ -46,15 +46,12 @@ const PaymentScreen = ({navigation, route}) => {
             <CarSpecificationSingle data={specifications[0]} />
           </View>
 
-          {locationNameFromMap ? (
-            <Summary
-              startDate={startDate}
-              endDate={endDate}
-              location={locationNameFromMap}
-            />
-          ) : (
-            <Summary startDate={startDate} endDate={endDate} location={''} />
-          )}
+          <Summary
+            handleClick={() => navigation.navigate('HomeLocation')}
+            startDate={startDate}
+            endDate={endDate}
+            location={locationNameFromMap ? locationNameFromMap : ''}
+          />
         </View>
       </ScrollView>
 

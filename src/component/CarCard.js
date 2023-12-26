@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   container: {
-    width: deviceWidth - 100,
+    width: deviceWidth - 30,
     backgroundColor: '#fff',
     justifyContent: 'space-between',
     borderRadius: radius,

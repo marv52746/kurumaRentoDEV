@@ -1,8 +1,11 @@
 import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import GeoMapsUtils from '../hooks/useGeoMaps';
 
-const Summary = ({location, startDate, endDate}) => {
+const Summary = ({handleClick, location, startDate, endDate}) => {
+  const {distanceFromOrigin} = GeoMapsUtils();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Summary</Text>
@@ -23,12 +26,13 @@ const Summary = ({location, startDate, endDate}) => {
       </View>
 
       <Text style={[styles.text]}>Pick-up Station</Text>
-      <View
+      <TouchableOpacity
+        onPress={handleClick}
         style={[styles.locationWrap, styles.alignCenter, styles.verticalM10]}>
         <Ionicons name="location-sharp" color={'#005E54'} size={30} />
         <Text style={styles.location}>{location ? location : null}</Text>
-        <Text style={styles.kmStyle}>20km</Text>
-      </View>
+        <Text style={styles.kmStyle}>{distanceFromOrigin}</Text>
+      </TouchableOpacity>
 
       <Text style={[styles.text, styles.mt10]}>Payment Options</Text>
       <View style={[styles.alignCenter, styles.startm10]}>
@@ -37,9 +41,7 @@ const Summary = ({location, startDate, endDate}) => {
           resizeMode="contain"
           style={styles.imageStyle}
         />
-        <Text style={[styles.text, styles.m20]}>
-          University of Ghana, Legon
-        </Text>
+        <Text style={[styles.text, styles.m20]}>Gcash Name</Text>
       </View>
     </View>
   );
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#005E54',
     paddingHorizontal: 20,
-    paddingTop: 40,
+    paddingTop: 35,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
   },
@@ -95,5 +97,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#000',
   },
-  verticalPad20: {paddingVertical: 20},
+  verticalPad20: {paddingVertical: 15},
 });

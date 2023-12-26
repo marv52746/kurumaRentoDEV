@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BackButton from '../component/BackButton';
@@ -14,8 +14,14 @@ import RenterDetails from '../component/RenterDetails';
 import CarSpecifics from '../component/CarSpecifics';
 import BookBtn from '../component/BookBtn';
 import {specifications} from '../data/index';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const SpecsScreen = ({navigation, route}) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+  const handleFavorites = () => {
+    // Toggle the favorite status
+    setIsFavorite(!isFavorite);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -35,12 +41,14 @@ const SpecsScreen = ({navigation, route}) => {
           <Text style={[styles.title, styles.colorDark]}>
             {route.params?.car.name}
           </Text>
-          <FontAwesome
-            style={styles.mr20}
-            name="heart"
-            color="#005C52"
-            size={30}
-          />
+          <TouchableOpacity onPress={handleFavorites}>
+            <FontAwesome
+              style={styles.mr20}
+              name={isFavorite ? 'heart' : 'heart-o'}
+              color="#005C52"
+              size={30}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.flexStartRow}>
           <Text style={[styles.mr5, styles.colorDark]}> 5.0 </Text>

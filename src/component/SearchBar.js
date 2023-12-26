@@ -6,21 +6,14 @@ import {
   Dimensions,
 } from 'react-native';
 import React from 'react';
-import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function SearchBar() {
   return (
     <View style={styles.container}>
-      <Ionicons
-        style={styles.searchIcon}
-        name="search-outline"
-        size={30}
-        color="#7D7D7D"
-      />
-      <TextInput style={styles.inputText} placeholder="Search for coffee" />
+      <TextInput style={styles.inputText} placeholder="Search for cars" />
       <TouchableOpacity>
-        <Feather style={styles.micIcon} name="mic" size={25} />
+        <Ionicons style={styles.micIcon} name="search-outline" size={25} />
       </TouchableOpacity>
     </View>
   );
@@ -29,10 +22,11 @@ const deviceWidth = Math.round(Dimensions.get('window').width);
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: '#fff',
     borderRadius: 15,
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 5,
     width: deviceWidth - 30,
   },
@@ -40,7 +34,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#7D7D7D',
     fontFamily: 'Poppins-Regular',
-    width: '80%',
+    width: '85%',
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',

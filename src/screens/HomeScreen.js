@@ -13,8 +13,7 @@ import React from 'react';
 
 import SearchBar from '../component/SearchBar';
 import CarCard from '../component/CarCard';
-import CarLogoCard from '../component/CarLogoCard';
-import {cars, carLogo} from '../data/index';
+import {cars} from '../data/index';
 import {ScrollView} from 'react-native-gesture-handler';
 
 const HomeScreen = ({navigation, route}) => {
@@ -43,13 +42,21 @@ const HomeScreen = ({navigation, route}) => {
 
         <View style={styles.topSectionWrap}>
           <View style={styles.allWrap}>
-            <Text style={styles.allCarsText}>Top Brands</Text>
-            <Text style={styles.seeAllText}>See All</Text>
+            <Text style={styles.allCarsText}>Available Today</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AvailableCars')}>
+              <Text style={styles.seeAllText}>See All</Text>
+            </TouchableOpacity>
           </View>
 
           <FlatList
-            data={carLogo}
-            renderItem={({item}) => <CarLogoCard item={item} />}
+            data={cars}
+            renderItem={({item}) => (
+              <CarCard
+                item={item}
+                onPress={() => navigation.navigate('SpecsScreen', {car: item})}
+              />
+            )}
             keyExtractor={item => item._id}
             showsHorizontalScrollIndicator={false} // Set this prop to hide the scroll bar
             horizontal
@@ -58,8 +65,10 @@ const HomeScreen = ({navigation, route}) => {
 
         <View style={styles.bottomSectionWrap}>
           <View style={styles.allWrap}>
-            <Text style={styles.allCarsText}>Available Near You</Text>
-            <Text style={styles.seeAllText}>See All</Text>
+            <Text style={styles.allCarsText}>All Cars</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('AllCars')}>
+              <Text style={styles.seeAllText}>See All</Text>
+            </TouchableOpacity>
           </View>
 
           <FlatList

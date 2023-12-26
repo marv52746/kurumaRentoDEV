@@ -16,6 +16,8 @@ import SpecsScreen from '../screens/SpecsScreen';
 import DateTimeScreen from '../screens/DateTimeScreen';
 import PaymentScreen from '../screens/PaymentScreen';
 import HomeLocationScreen from '../screens/HomeLocationScreen';
+import AllCarsScreen from '../screens/AllCarsScreen';
+import AvailableToday from '../screens/AvailableToday';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -48,9 +50,16 @@ const HomeStack = () => {
         component={HomeLocationScreen}
         options={{headerShown: false}}
       />
-      {/* <Stack.Screen name="GameDetails" component={GameDetailsScreen} options={({route})=>({
-            title: route.params?.title
-        })} /> */}
+      <Stack.Screen
+        name="AllCars"
+        component={AllCarsScreen}
+        options={{headerShown: true, title: 'All Cars'}}
+      />
+      <Stack.Screen
+        name="AvailableCars"
+        component={AvailableToday}
+        options={{headerShown: true, title: 'Available Cars Today'}}
+      />
     </Stack.Navigator>
   );
 };
