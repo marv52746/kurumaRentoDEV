@@ -1,73 +1,71 @@
-import React, { useState } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
+import React, {useState} from 'react';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-const PickUpTime = () => {
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedTime, setSelectedTime] = useState(null);
+const ReturnTime = () => {
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState(new Date());
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = (date) => {
-    setSelectedTime(date)
-    hideDatePicker();
-  };
-
-  const formatTime = (time) => {
-    return time ? time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+  const formatTime = time => {
+    return time
+      ? time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+      : '';
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.pickTimeText}>Return Time</Text>
-      <TouchableOpacity style={styles.timeWrap} onPress={showDatePicker}>
-        <Text style={styles.timeText}>{selectedTime ? formatTime(selectedTime) : null}</Text>
-        <SimpleLineIcons name='arrow-down' color="#000" size={15} />
+      <TouchableOpacity style={styles.timeWrap} onPress={() => setOpen(true)}>
+        <Text style={styles.timeText}>{date ? formatTime(date) : null}</Text>
+        <SimpleLineIcons name="arrow-down" color="#005E54" size={15} />
       </TouchableOpacity>
-      
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
+
+      <DatePicker
+        modal
         mode="time"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-        date={new Date()}
-        is24Hour={false}
+        open={open}
+        date={date}
+        onConfirm={dateTime => {
+          setOpen(false);
+          setDate(dateTime);
+        }}
+        onCancel={() => {
+          setOpen(false);
+        }}
       />
     </View>
   );
 };
 
-export default PickUpTime;
+export default ReturnTime;
 
-const deviceWidth = Math.round(Dimensions.get('window').width)
+const deviceWidth = Math.round(Dimensions.get('window').width);
 const styles = StyleSheet.create({
-  container:{
-    
-  },
-  pickTimeText:{
+  container: {},
+  pickTimeText: {
     fontSize: 18,
     fontFamily: 'Poppins-Regular',
-    textAlign: 'right'
+    color: '#000',
   },
-  timeWrap:{
+  timeWrap: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#D9D9D9',
+    backgroundColor: '#fff',
     borderRadius: 10,
-    width: deviceWidth/3
+    width: deviceWidth / 3,
   },
-  timeText:{
+  timeText: {
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
+    color: '#005E54',
   },
-
-})
+});

@@ -9,7 +9,7 @@ const BookDriver = () => {
     <View style={[styles.container, styles.shadowContainer]}>
       <View>
         <Text style={styles.driverTextStyles}>Book Our Driver</Text>
-        <Text style={[styles.driverTextStyles, {fontSize: 12}]}>
+        <Text style={[styles.driverTextStyles, styles.subDriverTextStyles]}>
           Don't have a driver? You can book ours
         </Text>
       </View>
@@ -20,6 +20,7 @@ const BookDriver = () => {
           ios_backgroundColor="#D9D9D9"
           onValueChange={toggleSwitch}
           value={isEnabled}
+          style={{transform: [{scaleX: 1.3}, {scaleY: 1.3}]}} // Adjust the scale factor as needed
         />
       </View>
     </View>
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 15,
     borderRadius: 10,
+    marginBottom: 15,
   },
   shadowContainer: {
     // Shadow styles for both iOS and Android
@@ -47,7 +49,11 @@ const styles = StyleSheet.create({
   },
   driverTextStyles: {
     fontSize: 24,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Bold',
     color: '#000',
+  },
+  subDriverTextStyles: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
   },
 });

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {StyleSheet, View, Dimensions, Alert} from 'react-native';
+import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {StyleSheet, View, Dimensions, Alert, Text} from 'react-native';
 import {getLocation} from '../hooks/useLocation';
 import {LOCATION_API} from '@env';
 
@@ -27,7 +27,10 @@ const Maps = ({onLocationNameChange}) => {
     )
       .then(response => response.json())
       .then(responseJson => {
-        onLocationNameChange(responseJson.results[3].formatted_address);
+        // onLocationNameChange(responseJson.results[3].formatted_address);
+        onLocationNameChange(
+          responseJson.results[4].address_components[0].long_name,
+        );
       });
   }, [onLocationNameChange]);
 
@@ -39,7 +42,7 @@ const Maps = ({onLocationNameChange}) => {
   };
 
   const onMarkerSelect = () => {
-    Alert.alert('Las Piñas Store');
+    Alert.alert('Ask for Las Piñas Store');
   };
 
   return (
@@ -50,11 +53,21 @@ const Maps = ({onLocationNameChange}) => {
         // showsMyLocationButton={true}
         region={INITIAL_REGION}
         style={styles.map}>
-        <Marker
+        {/* <Marker
           pinColor="red"
           coordinate={INITIAL_REGION}
           onPress={onMarkerSelect}
-        />
+        /> */}
+        <Marker
+          pinColor="red"
+          coordinate={INITIAL_REGION}
+          onPress={onMarkerSelect}>
+          <Callout>
+            <View>
+              <Text>Pick-up Station</Text>
+            </View>
+          </Callout>
+        </Marker>
       </MapView>
     </View>
   );

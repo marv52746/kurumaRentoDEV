@@ -1,12 +1,12 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
 import BackButton from '../component/BackButton';
 import BookBtn from '../component/BookBtn';
 import BookDriver from '../component/BookDriver';
 import Calendar from '../component/Calendar';
-// import PickUpTime from '../component/PickUpTime';
-// import ReturnTime from '../component/ReturnTime';
+import PickUpTime from '../component/PickUpTime';
+import ReturnTime from '../component/ReturnTime';
 
 export default function DateTimeScreen({navigation, route}) {
   const [selectedStartDate, setSelectedStartDate] = useState(null);
@@ -41,6 +41,17 @@ export default function DateTimeScreen({navigation, route}) {
     return inputDate.toLocaleDateString(undefined, options);
   };
 
+  const handleBookBtn = () => {
+    const currentDate = new Date();
+    const endDate = new Date(selectedEndDate);
+
+    if (endDate.getFullYear() < currentDate.getFullYear()) {
+      Alert.alert('Please select a date range.');
+    } else {
+      navigation.navigate('Payment', formatDate);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -56,8 +67,8 @@ export default function DateTimeScreen({navigation, route}) {
         <BookDriver />
         <Calendar onDateChange={onDateChange} />
         <View style={styles.pickTime}>
-          {/* <PickUpTime /> */}
-          {/* <ReturnTime /> */}
+          <PickUpTime />
+          <ReturnTime />
         </View>
       </View>
 
@@ -65,7 +76,7 @@ export default function DateTimeScreen({navigation, route}) {
         <BookBtn
           color={'#005E54'}
           selectedDates={{selectedStartDate, selectedEndDate}}
-          onPress={() => navigation.navigate('Payment', formatDate)}
+          onPress={handleBookBtn}
         />
       </View>
     </View>

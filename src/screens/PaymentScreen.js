@@ -57,7 +57,7 @@ const PaymentScreen = ({navigation, route}) => {
 
       <View style={styles.pad10}>
         <TouchableOpacity style={[styles.bookNowBtn]} onPress={() => {}}>
-          <Text style={styles.btnStyles}>Pay Now</Text>
+          <Text style={styles.btnStyles}>Contact us for payment</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -69,7 +69,7 @@ export default PaymentScreen;
 const deviceWidth = Math.round(Dimensions.get('window').width);
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#005B52'},
-  subContainer: {height: 250, flex: 1},
+  subContainer: {height: 230, flex: 1},
   subBg: {backgroundColor: '#E6EFEE', flex: 1},
   padBtm: {paddingHorizontal: 20, paddingBottom: 10},
   pad10: {padding: 10},
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   borderStyles: {
-    paddingTop: 40,
+    paddingTop: 30,
     borderTopEndRadius: 50,
     borderTopStartRadius: 50,
     flex: 1, // Adjusted flex property
