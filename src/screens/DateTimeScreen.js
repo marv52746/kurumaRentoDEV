@@ -1,5 +1,5 @@
 import {Alert, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
 import BackButton from '../component/BackButton';
 import BookBtn from '../component/BookBtn';
@@ -7,48 +7,18 @@ import BookDriver from '../component/BookDriver';
 import Calendar from '../component/Calendar';
 import PickUpTime from '../component/PickUpTime';
 import ReturnTime from '../component/ReturnTime';
+import {connect} from 'react-redux';
 
-export default function DateTimeScreen({navigation, route}) {
-  const [selectedStartDate, setSelectedStartDate] = useState(null);
-  const [selectedEndDate, setSelectedEndDate] = useState(null);
-  const [formatDate, setformatDate] = useState({
-    startDate: null,
-    endDate: null,
-  });
-
-  const onDateChange = (date, type) => {
-    if (type === 'END_DATE' && selectedStartDate && date >= selectedStartDate) {
-      setSelectedEndDate(date);
-    } else if (type === 'START_DATE') {
-      setSelectedEndDate(null);
-      setSelectedStartDate(date);
-    }
-  };
-
-  useEffect(() => {
-    setformatDate({
-      startDate: formatDateString(selectedStartDate),
-      endDate: formatDateString(selectedEndDate),
-    });
-  }, [selectedStartDate, selectedEndDate]);
-
-  const formatDateString = inputDateString => {
-    const inputDate = new Date(inputDateString);
-    if (isNaN(inputDate)) {
-      return null; // Invalid date string
-    }
-    const options = {month: 'short', day: 'numeric', year: 'numeric'};
-    return inputDate.toLocaleDateString(undefined, options);
-  };
-
+const DateTimeScreen = ({navigation, route, reservation}) => {
   const handleBookBtn = () => {
-    const currentDate = new Date();
-    const endDate = new Date(selectedEndDate);
-
-    if (endDate.getFullYear() < currentDate.getFullYear()) {
+    // const currentDate = new Date();
+    // const endDate = new Date(reservation.endDate);
+    if (!reservation.endDate) {
       Alert.alert('Please select a date range.');
+    } else if (!reservation.startTime || !reservation.endTime) {
+      Alert.alert('Please select time.');
     } else {
-      navigation.navigate('Payment', formatDate);
+      navigation.navigate('Payment');
     }
   };
 
@@ -65,7 +35,7 @@ export default function DateTimeScreen({navigation, route}) {
 
       <View style={styles.contentStyle}>
         <BookDriver />
-        <Calendar onDateChange={onDateChange} />
+        <Calendar />
         <View style={styles.pickTime}>
           <PickUpTime />
           <ReturnTime />
@@ -73,15 +43,17 @@ export default function DateTimeScreen({navigation, route}) {
       </View>
 
       <View style={{}}>
-        <BookBtn
-          color={'#005E54'}
-          selectedDates={{selectedStartDate, selectedEndDate}}
-          onPress={handleBookBtn}
-        />
+        <BookBtn color={'#005E54'} onPress={handleBookBtn} />
       </View>
     </View>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  reservation: state.utils.reservation,
+});
+
+export default connect(mapStateToProps)(DateTimeScreen);
 
 // const deviceWidth = Math.round(Dimensions.get('window').width);
 // const deviceHeight = Math.round(Dimensions.get('window').height);

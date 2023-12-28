@@ -1,34 +1,36 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+// LoginComponent.js
+import React, {useState} from 'react';
+import {connect} from 'react-redux';
+import {View, TextInput, Button} from 'react-native';
+import {login} from '../services/authSlice'; // Import the login action
 
-const LoginScreen = ({navigation}) => {
+const LoginComponent = ({login}) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    // Perform authentication logic here and dispatch the login action
+    const user = {username, password}; // Example, replace with actual authentication logic
+
+    login(user);
+  };
+
   return (
-    <SafeAreaView style={{flex:1}}>
-      <View style={{
-          flex: 1,
-          justifyContent:'center',
-          alignItems: 'center'
-      }}>
-        <TouchableOpacity 
-          onPress={()=> navigation.navigate('Onboarding') }
-          style={{
-              backgroundColor: 'blue',
-              padding: 10,
-          }}
-        >
-          <Text 
-              style={{
-                  color: '#fff'
-              }}
-          >
-            Go back to Onboarding
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-  )
-}
+    <View>
+      <TextInput
+        placeholder="Username"
+        value={username}
+        onChangeText={text => setUsername(text)}
+      />
+      <TextInput
+        placeholder="Password"
+        value={password}
+        onChangeText={text => setPassword(text)}
+        secureTextEntry
+      />
+      <Button title="Login" onPress={handleLogin} />
+    </View>
+  );
+};
 
-export default LoginScreen
-
-const styles = StyleSheet.create({})
+export default connect(null, {login})(LoginComponent);

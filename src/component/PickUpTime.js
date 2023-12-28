@@ -8,16 +8,13 @@ import {
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {connect} from 'react-redux';
+import {updateReservation} from '../services/utilsSlice';
+import {formatTime} from '../global/utilities';
 
-const PickUpTime = () => {
+const PickUpTime = ({dispatch, reservation}) => {
   const [open, setOpen] = useState(false);
-  const [date, setDate] = useState(new Date());
-
-  const formatTime = time => {
-    return time
-      ? time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
-      : '';
-  };
+  const [date, setDate] = useState(null);
 
   return (
     <View style={styles.container}>
@@ -31,8 +28,13 @@ const PickUpTime = () => {
         modal
         mode="time"
         open={open}
-        date={date}
+        date={date || new Date()}
         onConfirm={dateTime => {
+          const payload = {
+            ...reservation,
+            startTime: formatTime(dateTime), // Convert Date to string,
+          };
+          dispatch(updateReservation(payload));
           setOpen(false);
           setDate(dateTime);
         }}
@@ -44,7 +46,11 @@ const PickUpTime = () => {
   );
 };
 
-export default PickUpTime;
+const mapStateToProps = state => ({
+  reservation: state.utils.reservation,
+});
+
+export default connect(mapStateToProps)(PickUpTime);
 
 const deviceWidth = Math.round(Dimensions.get('window').width);
 const styles = StyleSheet.create({

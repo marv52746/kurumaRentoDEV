@@ -3,9 +3,11 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import GeoMapsUtils from '../hooks/useGeoMaps';
+import {connect} from 'react-redux';
 
-const Summary = ({handleClick, location, startDate, endDate}) => {
+const Summary = ({handleClick, location, reservation}) => {
   const {distanceFromOrigin} = GeoMapsUtils();
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Summary</Text>
@@ -14,13 +16,17 @@ const Summary = ({handleClick, location, startDate, endDate}) => {
         <View>
           <Text style={[styles.text]}>Start</Text>
           <View style={styles.timeWrap}>
-            <Text style={styles.date}>{startDate}</Text>
+            <Text style={styles.date}>
+              {`${reservation.startDate} - ${reservation.startTime}`}
+            </Text>
           </View>
         </View>
         <View>
           <Text style={[styles.text]}>Finish</Text>
           <View style={styles.timeWrap}>
-            <Text style={styles.date}>{endDate}</Text>
+            <Text style={styles.date}>
+              {`${reservation.endDate} - ${reservation.endTime}`}
+            </Text>
           </View>
         </View>
       </View>
@@ -47,14 +53,18 @@ const Summary = ({handleClick, location, startDate, endDate}) => {
   );
 };
 
-export default Summary;
+const mapStateToProps = state => ({
+  reservation: state.utils.reservation,
+});
+
+export default connect(mapStateToProps)(Summary);
 
 const deviceWidth = Math.round(Dimensions.get('window').width);
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#005E54',
     paddingHorizontal: 20,
-    paddingTop: 35,
+    paddingTop: 25,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
   },
@@ -73,7 +83,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: deviceWidth / 3,
     borderRadius: 10,
-    paddingVertical: 15,
+    paddingVertical: 10,
   },
   locationWrap: {
     backgroundColor: '#fff',
@@ -91,11 +101,11 @@ const styles = StyleSheet.create({
   mt10: {marginTop: 10},
   kmStyle: {fontSize: 16, textAlign: 'center', color: '#005E54'},
   location: {fontSize: 16, textAlign: 'center', color: '#005E54'},
-  verticalM10: {marginVertical: 10},
+  verticalM10: {marginVertical: 5},
   date: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#000',
+    color: '#005D54',
   },
   verticalPad20: {paddingVertical: 15},
 });

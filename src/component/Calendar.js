@@ -2,13 +2,38 @@
 // https://aboutreact.com/react-native-calendar-picker/
 
 // import React in our code
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import CalendarPicker from 'react-native-calendar-picker';
+import {connect} from 'react-redux';
+import {updateReservation} from '../services/utilsSlice';
+import {formatDate} from '../global/utilities';
 
-export default function Calendar({onDateChange}) {
+const Calendar = ({dispatch, reservation}) => {
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+
+  const handleDateChange = (date, type) => {
+    if (type === 'END_DATE' && selectedStartDate && date >= selectedStartDate) {
+      setSelectedEndDate(date);
+    } else if (type === 'START_DATE') {
+      setSelectedEndDate(null);
+      setSelectedStartDate(date);
+    }
+  };
+
+  useEffect(() => {
+    const payload = {
+      ...reservation,
+      endDate: formatDate(selectedEndDate),
+      startDate: formatDate(selectedStartDate),
+    };
+    dispatch(updateReservation(payload));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStartDate, selectedEndDate]);
+
   return (
     <View style={[styles.container, styles.shadowContainer]}>
       <CalendarPicker
@@ -34,11 +59,17 @@ export default function Calendar({onDateChange}) {
         selectedDayColor="#005E54"
         selectedDayTextColor="#fff"
         scaleFactor={375}
-        onDateChange={onDateChange}
+        onDateChange={handleDateChange}
       />
     </View>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  reservation: state.utils.reservation,
+});
+
+export default connect(mapStateToProps)(Calendar);
 
 const styles = StyleSheet.create({
   ml20: {marginLeft: 20},

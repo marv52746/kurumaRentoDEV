@@ -1,27 +1,15 @@
 import {StyleSheet, Text, View, Dimensions} from 'react-native';
 import React from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {connect} from 'react-redux';
 
-const BookBtn = ({color, title, onPress, selectedDates}) => {
-  const formatDateString = inputDateString => {
-    const inputDate = new Date(inputDateString);
-    if (isNaN(inputDate)) {
-      return null; // Invalid date string
-    }
-    const options = {month: 'short', day: 'numeric'};
-    return inputDate.toLocaleDateString(undefined, options);
-  };
-
-  const printDate = selectedDate => {
-    const start = selectedDate?.selectedStartDate
-      ? formatDateString(selectedDate?.selectedStartDate)
-      : '';
-    const end = selectedDate?.selectedEndDate
-      ? formatDateString(selectedDate?.selectedEndDate)
-      : '';
+const BookBtn = ({color, title, onPress, reservation}) => {
+  const printDate = () => {
+    const start = reservation.startDate;
+    const end = reservation.endDate;
     if (start && !end) {
       return `${start}`;
-    } else if (start && end) {
+    } else {
       return `${start} - ${end}`;
     }
   };
@@ -30,10 +18,10 @@ const BookBtn = ({color, title, onPress, selectedDates}) => {
     <View style={styles.container}>
       <View style={styles.subContainer}>
         <View style={styles.alignCenter}>
-          {!selectedDates?.selectedStartDate ? (
+          {!reservation?.startDate ? (
             <Text style={styles.colorDark}>Rate</Text>
           ) : (
-            <Text style={styles.colorDark}>{printDate(selectedDates)}</Text>
+            <Text style={styles.colorDark}>{printDate()}</Text>
           )}
           <Text style={styles.rateStyles}>$1200 /day</Text>
         </View>
@@ -49,7 +37,13 @@ const BookBtn = ({color, title, onPress, selectedDates}) => {
   );
 };
 
-export default BookBtn;
+// export default BookBtn;
+
+const mapStateToProps = state => ({
+  reservation: state.utils.reservation,
+});
+
+export default connect(mapStateToProps)(BookBtn);
 
 const deviceWidth = Math.round(Dimensions.get('window').width);
 // const deviceheight = Math.round(Dimensions.get('window').height)
@@ -92,6 +86,7 @@ const styles = StyleSheet.create({
     color: '#005E54',
     fontSize: 15,
     fontFamily: 'Poppins-Bold',
+    alignSelf: 'flex-start',
   },
   btnText: {
     color: '#fff',

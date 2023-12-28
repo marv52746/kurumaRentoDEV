@@ -1,20 +1,28 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import PickUpTime from '../component/PickUpTime';
+import {connect} from 'react-redux';
 
-const NotificationScreen = () => {
+import {StyleSheet, Text, View} from 'react-native';
+
+const NotificationScreen = ({isAuthenticated, user}) => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <PickUpTime />
+    <View style={styles.alignCenter}>
+      <Text>Is Authenticated: {isAuthenticated.toString()}</Text>
+      <Text>User: {user.username}</Text>
     </View>
   );
 };
 
-export default NotificationScreen;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user,
+});
 
-const styles = StyleSheet.create({});
+export default connect(mapStateToProps)(NotificationScreen);
+
+const styles = StyleSheet.create({
+  alignCenter: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

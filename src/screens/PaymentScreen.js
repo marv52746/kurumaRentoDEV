@@ -19,8 +19,6 @@ import Maps from '../component/Maps';
 const PaymentScreen = ({navigation, route}) => {
   const [locationNameFromMap, setLocationNameFromMap] = useState(null);
 
-  const {startDate, endDate} = route?.params;
-
   const handleLocationNameChange = newLocationName => {
     // console.log(locationNameFromMap);
     setLocationNameFromMap(newLocationName);
@@ -48,8 +46,6 @@ const PaymentScreen = ({navigation, route}) => {
 
           <Summary
             handleClick={() => navigation.navigate('HomeLocation')}
-            startDate={startDate}
-            endDate={endDate}
             location={locationNameFromMap ? locationNameFromMap : ''}
           />
         </View>
